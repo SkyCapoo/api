@@ -112,49 +112,58 @@
 <script>
     let intervalId;
 
-    // 按下 "開始循環" 按鈕時觸發
-    document.getElementById('startBtn').addEventListener('click', function() {
-        const miniuid = document.getElementById('miniuid').value;
-        const inviter_name = document.getElementById('inviter_name').value;
-        const room_name = document.getElementById('room_name').value;
-        const max_players = document.getElementById('max_players').value;
-        const current_players = document.getElementById('current_players').value;
+    // 等待頁面載入完成後執行
+    document.addEventListener('DOMContentLoaded', function() {
+        // 按下 "開始循環" 按鈕時觸發
+        document.getElementById('startBtn').addEventListener('click', function() {
+            const miniuid = document.getElementById('miniuid').value;
+            const inviter_name = document.getElementById('inviter_name').value;
+            const room_name = document.getElementById('room_name').value;
+            const max_players = document.getElementById('max_players').value;
+            const current_players = document.getElementById('current_players').value;
 
-        const params = new URLSearchParams({
-            miniuid: miniuid,
-            inviter_name: inviter_name,
-            room_name: room_name,
-            max_players: max_players,
-            current_players: current_players
+            const params = new URLSearchParams({
+                miniuid: miniuid,
+                inviter_name: inviter_name,
+                room_name: room_name,
+                max_players: max_players,
+                current_players: current_players
+            });
+
+            // 開始循環請求
+            intervalId = setInterval(function() {
+                fetch("http://capooapi.wuaze.com/index.php?" + params.toString(), {
+                    method: 'GET',
+                    headers: {
+                        "Host": "capooapi.wuaze.com",
+                        "Connection": "keep-alive",
+                        "Cache-Control": "max-age=0",
+                        "Accept-Language": "zh-HK",
+                        "Upgrade-Insecure-Requests": "1",
+                        "User-Agent": "Mozilla/5.0 (Linux; Android 10; K) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/132.0.0.0 Mobile Safari/537.36",
+                        "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.7",
+                        "Referer": "android-app://com.google.android.googlequicksearchbox/",
+                        "Accept-Encoding": "gzip, deflate",
+                        "Cookie": "__test=1b84c756df61cfb05fed4bb4330c5394"
+                    }
+                });
+            }, 1000); // 每秒執行一次
+
+            // 顯示小彈窗
+            alert('循環開啟成功');
+            document.getElementById('startBtn').disabled = true;
+            document.getElementById('stopBtn').disabled = false;
         });
 
-        // 開始循環請求
-        intervalId = setInterval(function() {
-            fetch("http://capooapi.wuaze.com/index.php?" + params.toString(), {
-                method: 'GET',
-                headers: {
-                    "Host": "capooapi.wuaze.com",
-                    "Connection": "keep-alive",
-                    "Cache-Control": "max-age=0",
-                    "Accept-Language": "zh-HK",
-                    "Upgrade-Insecure-Requests": "1",
-                    "User-Agent": "Mozilla/5.0 (Linux; Android 10; K) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/132.0.0.0 Mobile Safari/537.36",
-                    "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.7",
-                    "Referer": "android-app://com.google.android.googlequicksearchbox/",
-                    "Accept-Encoding": "gzip, deflate",
-                    "Cookie": "__test=1b84c756df61cfb05fed4bb4330c5394"
-                }
-            });
-        }, 1000); // 每秒執行一次
-        document.getElementById('startBtn').disabled = true;
-        document.getElementById('stopBtn').disabled = false;
-    });
+        // 按下 "停止循環" 按鈕時觸發
+        document.getElementById('stopBtn').addEventListener('click', function() {
+            clearInterval(intervalId);
 
-    // 按下 "停止循環" 按鈕時觸發
-    document.getElementById('stopBtn').addEventListener('click', function() {
-        clearInterval(intervalId);
-        document.getElementById('startBtn').disabled = false;
-        document.getElementById('stopBtn').disabled = true;
+            // 顯示小彈窗
+            alert('循環關閉成功');
+            document.getElementById('startBtn').disabled = false;
+            document.getElementById('stopBtn').disabled = true;
+        });
     });
 </script>
 
