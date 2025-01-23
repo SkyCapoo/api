@@ -1,64 +1,162 @@
 <!DOCTYPE html>
-<html lang="zh-Hant">
+<html lang="zh-HK">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>CAPOO_WORLD</title>
-  <style>
-    body {
-      font-family: Arial, sans-serif;
-      background-color: #f4f4f9;
-      margin: 0;
-      padding: 0;
-    }
-    header {
-      background-color: #4CAF50;
-      color: white;
-      text-align: center;
-      padding: 20px;
-    }
-    main {
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      height: 80vh;
-    }
-    .card {
-      background-color: white;
-      padding: 20px;
-      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-      border-radius: 8px;
-      width: 300px;
-      text-align: center;
-    }
-    .card h2 {
-      margin-top: 0;
-    }
-    footer {
-      text-align: center;
-      padding: 10px;
-      background-color: #333;
-      color: white;
-    }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SkyCapoo</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f9;
+            text-align: center;
+            margin: 0;
+            padding: 0;
+        }
+        header {
+            background-color: #87CEEB; /* 天空藍 */
+            color: white;
+            padding: 15px;
+            text-align: center;
+        }
+        header img {
+            width: 40px;
+            vertical-align: middle;
+            margin-right: 10px;
+        }
+        h1 {
+            display: inline-block;
+            font-size: 36px;
+            margin: 0;
+        }
+        h2 {
+            font-size: 24px;
+            color: #333;
+            margin-top: 10px;
+        }
+        .container {
+            margin-top: 50px;
+        }
+        .input-group {
+            margin: 10px auto;
+            text-align: center;
+            width: 300px;
+        }
+        .input-group label {
+            font-size: 18px;
+            margin-right: 10px;
+            display: inline-block;
+            width: 100px;
+            text-align: right;
+        }
+        .input-group input {
+            padding: 8px;
+            font-size: 16px;
+            width: 190px;
+        }
+        .button-group {
+            margin-top: 20px;
+        }
+        .button-group button {
+            padding: 10px 20px;
+            font-size: 16px;
+            background-color: #4CAF50; /* 綠色 */
+            color: white;
+            border: none;
+            cursor: pointer;
+            margin: 10px;
+        }
+        .button-group button.stop {
+            background-color: #f44336;
+        }
+        .button-group button:hover {
+            opacity: 0.8;
+        }
+    </style>
 </head>
 <body>
 
-  <header>
-    <h1>🌠歡迎來到SkyCapoo</h1>
-  </header>
+<header>
+    <img src="https://www.pnglog.com/7CSPjJ.png" alt="SkyCapoo Logo">
+    <h1>SkyCapoo</h1>
+    <h2>指定玩家循環邀請</h2>
+</header>
 
-  <main>
-    <div class="card">
-      <h2>SkyCapoo</h2>
-      <p>capoo love you。</p>
-      <button>button</button>
+<div class="container">
+    <div class="input-group">
+        <label for="miniuid">迷你號:</label>
+        <input type="number" id="miniuid" value="1000">
     </div>
-  </main>
+    <div class="input-group">
+        <label for="inviter_name">邀請者名稱:</label>
+        <input type="text" id="inviter_name" value="#RCAPOO">
+    </div>
+    <div class="input-group">
+        <label for="room_name">房間名稱:</label>
+        <input type="text" id="room_name" value="Capoooo">
+    </div>
+    <div class="input-group">
+        <label for="max_players">最多人數:</label>
+        <input type="number" id="max_players" value="6">
+    </div>
+    <div class="input-group">
+        <label for="current_players">當前人數:</label>
+        <input type="number" id="current_players" value="1">
+    </div>
 
-  <footer>
-    <p>&copy; 2025 SkyCapoo</p>
-  </footer>
+    <div class="button-group">
+        <button id="startBtn">開始循環</button>
+        <button id="stopBtn" class="stop" disabled>停止循環</button>
+    </div>
+</div>
+
+<script>
+    let intervalId;
+
+    // 按下 "開始循環" 按鈕時觸發
+    document.getElementById('startBtn').addEventListener('click', function() {
+        const miniuid = document.getElementById('miniuid').value;
+        const inviter_name = document.getElementById('inviter_name').value;
+        const room_name = document.getElementById('room_name').value;
+        const max_players = document.getElementById('max_players').value;
+        const current_players = document.getElementById('current_players').value;
+
+        const params = new URLSearchParams({
+            miniuid: miniuid,
+            inviter_name: inviter_name,
+            room_name: room_name,
+            max_players: max_players,
+            current_players: current_players
+        });
+
+        // 開始循環請求
+        intervalId = setInterval(function() {
+            fetch("http://capooapi.wuaze.com/index.php?" + params.toString(), {
+                method: 'GET',
+                headers: {
+                    "Host": "capooapi.wuaze.com",
+                    "Connection": "keep-alive",
+                    "Cache-Control": "max-age=0",
+                    "Accept-Language": "zh-HK",
+                    "Upgrade-Insecure-Requests": "1",
+                    "User-Agent": "Mozilla/5.0 (Linux; Android 10; K) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/132.0.0.0 Mobile Safari/537.36",
+                    "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.7",
+                    "Referer": "android-app://com.google.android.googlequicksearchbox/",
+                    "Accept-Encoding": "gzip, deflate",
+                    "Cookie": "__test=1b84c756df61cfb05fed4bb4330c5394"
+                }
+            });
+        }, 1000); // 每秒執行一次
+        document.getElementById('startBtn').disabled = true;
+        document.getElementById('stopBtn').disabled = false;
+    });
+
+    // 按下 "停止循環" 按鈕時觸發
+    document.getElementById('stopBtn').addEventListener('click', function() {
+        clearInterval(intervalId);
+        document.getElementById('startBtn').disabled = false;
+        document.getElementById('stopBtn').disabled = true;
+    });
+</script>
 
 </body>
 </html>
