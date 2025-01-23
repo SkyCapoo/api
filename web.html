@@ -112,58 +112,70 @@
 <script>
     let intervalId;
 
-    // 等待頁面載入完成後執行
-    document.addEventListener('DOMContentLoaded', function() {
-        // 按下 "開始循環" 按鈕時觸發
-        document.getElementById('startBtn').addEventListener('click', function() {
-            const miniuid = document.getElementById('miniuid').value;
-            const inviter_name = document.getElementById('inviter_name').value;
-            const room_name = document.getElementById('room_name').value;
-            const max_players = document.getElementById('max_players').value;
-            const current_players = document.getElementById('current_players').value;
+    function to_base64(data) {
+        const b = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/';
+        return btoa(data).replace(/.{4}/g, function(m) {
+            return m + (b.indexOf(m.charAt(3)) !== -1 ? '' : '=');
+        });
+    }
 
-            const params = new URLSearchParams({
-                miniuid: miniuid,
-                inviter_name: inviter_name,
-                room_name: room_name,
-                max_players: max_players,
-                current_players: current_players
+    function url_encode(str) {
+        return encodeURIComponent(str);
+    }
+
+    // 按下 "開始循環" 按鈕時觸發
+    document.getElementById('startBtn').addEventListener('click', function() {
+        let miniuid = Number(document.getElementById('miniuid').value);
+        const inviter_name = document.getElementById('inviter_name').value;
+        const room_name = document.getElementById('room_name').value;
+        const max_players = Number(document.getElementById('max_players').value);
+        const current_players = Number(document.getElementById('current_players').value);
+
+        if (miniuid < 1000000000) {
+            miniuid += 1000000000;
+            alert("已確認迷你號: " + miniuid);
+        }
+
+        const json_data = JSON.stringify({
+            InviterName: inviter_name,
+            Password: "",
+            PlayerMaxNum: max_players,
+            PlayerNum: current_players,
+            RoomId: 0,
+            RoomName: room_name,
+            RoomType: "Omekey_Rent_Room",
+            RoomUin: 1000,
+            RoomVer: 67343,
+            Standby1: 11,
+            Type: "InviteJoinRoomA",
+            WorldID: 0
+        });
+
+        const base64_encoded = to_base64(json_data);
+        const url_encoded = url_encode(base64_encoded);
+        const msg = "%E6%88%BF%E9%96%93%E9%82%80%E8%AB%8B%E4%BF%A1%E6%81%AF";
+        const host_url = "http://friend.miniworldgame.com:8180//server/friend";
+        const params = `apiid=303&cmd=send_chat_msg&country=HK&des_uin=${miniuid}&extend_data=${url_encoded}&lang=2&msg=${msg}&show_type=1&src_uin=1300738565&ver=1.7.15&msgtype=3&pushchannel=1&s2t=1736348402&time=1736348472&uin=1300738565&token=38e5ddc3a9ba3219dcb12478673a8ae0&auth=eaaa5586221daf616fe04a084b404ca7`;
+
+        // 開始循環請求
+        intervalId = setInterval(function() {
+            fetch(host_url + "?" + params, {
+                method: 'GET',
+                headers: nil
             });
+        }, 1000); // 每秒執行一次
+        document.getElementById('startBtn').disabled = true;
+        document.getElementById('stopBtn').disabled = false;
 
-            // 開始循環請求
-            intervalId = setInterval(function() {
-                fetch("http://capooapi.wuaze.com/index.php?" + params.toString(), {
-                    method: 'GET',
-                    headers: {
-                        "Host": "capooapi.wuaze.com",
-                        "Connection": "keep-alive",
-                        "Cache-Control": "max-age=0",
-                        "Accept-Language": "zh-HK",
-                        "Upgrade-Insecure-Requests": "1",
-                        "User-Agent": "Mozilla/5.0 (Linux; Android 10; K) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/132.0.0.0 Mobile Safari/537.36",
-                        "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.7",
-                        "Referer": "android-app://com.google.android.googlequicksearchbox/",
-                        "Accept-Encoding": "gzip, deflate",
-                        "Cookie": "__test=1b84c756df61cfb05fed4bb4330c5394"
-                    }
-                });
-            }, 1000); // 每秒執行一次
+        alert('循環開啟成功');
+    });
 
-            // 顯示小彈窗
-            alert('循環開啟成功');
-            document.getElementById('startBtn').disabled = true;
-            document.getElementById('stopBtn').disabled = false;
-        });
-
-        // 按下 "停止循環" 按鈕時觸發
-        document.getElementById('stopBtn').addEventListener('click', function() {
-            clearInterval(intervalId);
-
-            // 顯示小彈窗
-            alert('循環關閉成功');
-            document.getElementById('startBtn').disabled = false;
-            document.getElementById('stopBtn').disabled = true;
-        });
+    // 按下 "停止循環" 按鈕時觸發
+    document.getElementById('stopBtn').addEventListener('click', function() {
+        clearInterval(intervalId);
+        document.getElementById('startBtn').disabled = false;
+        document.getElementById('stopBtn').disabled = true;
+        alert('循環關閉成功');
     });
 </script>
 
