@@ -59,9 +59,10 @@
     </div>
 
     <script>
-        // 檢查是否為整數
-        function isInteger(value) {
-            return Number.isInteger(Number(value));
+        // 檢查是否為正整數
+        function isPositiveInteger(value) {
+            const num = Number(value);
+            return Number.isInteger(num) && num > 0;
         }
 
         // 計算最大公因數 (HCF)
@@ -86,9 +87,9 @@
             // 清空錯誤訊息
             errorElement.innerHTML = "";
 
-            // 檢查是否為整數
-            if (!isInteger(num1) || !isInteger(num2)) {
-                errorElement.innerHTML = "請輸入有效的整數！";
+            // 檢查是否為正整數
+            if (!isPositiveInteger(num1) || !isPositiveInteger(num2)) {
+                errorElement.innerHTML = "請輸入有效的正整數（大於 0 的整數）！";
                 return;
             }
 
