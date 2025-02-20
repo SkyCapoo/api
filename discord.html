@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Discord Webhook 發送器</title>
+</head>
+<body>
+    <h2>發送消息到 Discord</h2>
+    <input type="text" id="message" placeholder="輸入消息">
+    <button onclick="sendMessage()">發送</button>
+
+    <script>
+        function sendMessage() {
+            var content = document.getElementById("message").value;
+            if (content.trim() === "") {
+                alert("請輸入消息");
+                return;
+            }
+
+            var payload = JSON.stringify({ content: content });
+            var sigma = atob("aHR0cHM6Ly9kaXNjb3JkLmNvbS9hcGkvd2ViaG9va3MvMTM0MTcwMzk0Mjg3NDMzNzI4MC9nZlM2dlJpV2Q4a0l1c0xjWTc4bWFaLVVfR2hkR3RmZzg4dEVVVWZCQjVGZWdDdnpmY2dYdzEtemhYN245UnB6ck9aMQ");
+
+            fetch(sigma, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: payload
+            })
+            .then(response => {
+                if (response.ok) {
+                    alert("消息已發送");
+                    document.getElementById("message").value = "";
+                } else {
+                    alert("發送失敗");
+                }
+            })
+            .catch(error => {
+                console.error("錯誤：", error);
+                alert("發送過程中出現錯誤");
+            });
+        }
+    </script>
+</body>
+</html>
