@@ -1,0 +1,537 @@
+<!DOCTYPE html>
+<html lang="zh-HK">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>勳章解鎖系統</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+        
+        body {
+            font-family: 'Segoe UI', 'Microsoft JhengHei', sans-serif;
+            background: linear-gradient(135deg, #1a2a6c, #b21f1f, #1a2a6c);
+            background-size: 400% 400%;
+            animation: gradientBG 15s ease infinite;
+            min-height: 100vh;
+            padding: 10px;
+            color: #333;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        @keyframes gradientBG {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+        
+        .container {
+            max-width: 500px;
+            width: 100%;
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 8px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+            overflow: hidden;
+        }
+        
+        .header {
+            background: #4a6cf7;
+            color: white;
+            padding: 15px 20px;
+            text-align: center;
+        }
+        
+        .header h2 {
+            font-size: 22px;
+            margin-bottom: 5px;
+        }
+        
+        .content {
+            padding: 20px;
+        }
+        
+        .input-group {
+            margin-bottom: 15px;
+        }
+        
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: 600;
+        }
+        
+        input {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 14px;
+        }
+        
+        .medal-info {
+            margin: 15px 0;
+            padding: 15px;
+            background: #f8f9fa;
+            border-radius: 4px;
+            display: none;
+        }
+        
+        .medal-info.show {
+            display: block;
+        }
+        
+        .medal-info p {
+            margin: 5px 0;
+            font-size: 14px;
+        }
+        
+        .medal-info span {
+            font-weight: 700;
+        }
+        
+        .currency {
+            display: inline-flex;
+            align-items: center;
+            margin-left: 5px;
+        }
+        
+        .currency img {
+            width: 20px;
+            height: 20px;
+            margin-right: 4px;
+        }
+        
+        button {
+            background: #4a6cf7;
+            color: white;
+            padding: 12px;
+            border: none;
+            border-radius: 4px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            width: 100%;
+            margin-top: 10px;
+            transition: background 0.3s;
+        }
+        
+        button:hover {
+            background: #3a56e4;
+        }
+        
+        .response {
+            margin-top: 15px;
+            padding: 15px;
+            border-radius: 4px;
+            display: none;
+            font-size: 14px;
+        }
+        
+        .response.success {
+            background: #d4edda;
+            color: #155724;
+            display: block;
+        }
+        
+        .response.error {
+            background: #f8d7da;
+            color: #721c24;
+            display: block;
+        }
+        
+        .response.loading {
+            background: #cce5ff;
+            color: #004085;
+            display: block;
+            text-align: center;
+        }
+        
+        .medal-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+            gap: 10px;
+            margin: 15px 0;
+            max-height: 300px;
+            overflow-y: auto;
+        }
+        
+        .medal-item {
+            border: 1px solid #e1e5eb;
+            border-radius: 6px;
+            padding: 10px;
+            text-align: center;
+            cursor: pointer;
+            background: white;
+            font-size: 13px;
+            transition: all 0.2s;
+        }
+        
+        .medal-item:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 3px 8px rgba(0,0,0,0.1);
+        }
+        
+        .medal-item.selected {
+            border-color: #28a745;
+            background: rgba(40, 167, 69, 0.1);
+            transform: scale(1.05);
+        }
+        
+        .medal-image-container {
+            position: relative;
+            width: 50px;
+            height: 50px;
+            margin: 0 auto 5px;
+        }
+        
+        .medal-image {
+            width: 100%;
+            height: 100%;
+            display: block;
+        }
+        
+        .diamond-overlay {
+            position: absolute;
+            top: -10px;
+            left: -10px;
+            width: 140%;
+            height: 140%;
+            opacity: 1;
+        }
+        
+        .medal-name {
+            font-weight: 600;
+            margin-top: 3px;
+        }
+        
+        .footer {
+            text-align: center;
+            padding: 15px;
+            color: #6c757d;
+            font-size: 12px;
+            border-top: 1px solid #eaeaea;
+            background: #f8f9fa;
+        }
+        
+        .hint {
+            display: block;
+            margin-top: 3px;
+            font-size: 12px;
+            color: #6c757d;
+        }
+        
+        .currency-display {
+            display: flex;
+            align-items: center;
+            margin-top: 10px;
+            padding: 8px;
+            background: rgba(255, 255, 255, 0.7);
+            border-radius: 4px;
+            font-size: 14px;
+        }
+        
+        .currency-display img {
+            width: 24px;
+            height: 24px;
+            margin-right: 8px;
+        }
+        
+        .operation-details {
+            margin-top: 10px;
+            padding: 10px;
+            background: rgba(255, 255, 255, 0.5);
+            border-radius: 4px;
+            font-size: 13px;
+        }
+        
+        @media (max-width: 480px) {
+            .medal-grid {
+                grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+            }
+            
+            .header h2 {
+                font-size: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h2>勳章解鎖系統</h2>
+            <p>解鎖專屬勳章，展示您的成就</p>
+        </div>
+        
+        <div class="content">
+            <div class="input-group">
+                <label for="uin">唯一識別碼 (UIN)</label>
+                <input type="text" id="uin" placeholder="請輸入您的迷你號">
+                <small class="hint">系統會自動調整為10位數</small>
+            </div>
+            
+            <div class="input-group">
+                <label for="password">密碼</label>
+                <input type="password" id="password" placeholder="請輸入您的密碼">
+            </div>
+            
+            <div class="input-group">
+                <label>選擇勳章</label>
+                <div class="medal-grid" id="medalGrid">
+                    <!-- 勳章將通過JS動態生成 -->
+                </div>
+            </div>
+            
+            <div class="medal-info" id="medalInfo">
+                <p>勳章ID: <span id="medalId">-</span></p>
+                <p>需要消耗: <span id="cost">-</span> <span class="currency" id="currencyDisplay"></span></p>
+                <p>勳章名稱: <span id="medalName">-</span></p>
+            </div>
+            
+            <button id="unlockButton">解鎖滿級勳章</button>
+            
+            <div class="response" id="response"></div>
+        </div>
+        
+        <div class="footer">
+            <p>© 2025 勳章解鎖系統 | 安全可靠 | 成就解鎖</p>
+        </div>
+    </div>
+
+    <script>
+        const medals = [
+            { id: "1001", name: "獵魔者", costNum: 60, feetype: '1', imageUrl: "https://i.ibb.co/BHftt4nf/cj-bosskiller.png" },
+            { id: "1002", name: "寶藏獵手", costNum: 85, feetype: '0', imageUrl: "https://i.ibb.co/tMSc62Sc/cj-baozangnum.png" },
+            { id: "1003", name: "生存達人", costNum: 10, feetype: '0', imageUrl: "https://i.ibb.co/7x4bGDrC/cj-shengcuntianshu.png" },
+            { id: "1004", name: "極限戰神", costNum: 100, feetype: '0', imageUrl: "https://i.ibb.co/LX3jFV1P/cj-jixianbosskiller.png" },
+            { id: "1005", name: "神秘驚喜", costNum: 20, feetype: '1', imageUrl: "https://i.ibb.co/mCdPY329/cj-shenmiliwu.png" },
+            { id: "1006", name: "潮流最潮流", costNum: 400, feetype: '0', imageUrl: "https://i.ibb.co/5XVpS718/cj-hotmapnum.png" },
+            { id: "1008", name: "快樂小夥伴", costNum: 300, feetype: '0', imageUrl: "https://i.ibb.co/Lh9GnH7w/cj-haoyounum.png" },
+            { id: "1010", name: "集讚達人", costNum: 50, feetype: '1', imageUrl: "https://i.ibb.co/rfwf8npN/cj-dianzan.png" },
+            { id: "1011", name: "手留餘香", costNum: 40, feetype: '1', imageUrl: "https://i.ibb.co/PG896ypj/cj-jiaohua.png" },
+            { id: "1012", name: "害蟲剋星", costNum: 25, feetype: '1', imageUrl: "https://i.ibb.co/yFPfXjSq/cj-chuchong.png" },
+            { id: "1013", name: "百科全書", costNum: 300, feetype: '1', imageUrl: "https://i.ibb.co/2YY6TYPJ/cj-tujiannum.png" },
+            { id: "1014", name: "大豐收", costNum: 55, feetype: '1', imageUrl: "https://i.ibb.co/YF7qSFDc/cj-shouhuonum.png" },
+            { id: "1015", name: "茁壯成長", costNum: 350, feetype: '0', imageUrl: "https://i.ibb.co/xKt2FJsk/cj-guoshilv.png" },
+            { id: "1016", name: "全員集結", costNum: 120, feetype: '1', imageUrl: "https://i.ibb.co/9k7X6KHK/cj-juesenum.png" },
+            { id: "1017", name: "強大如我", costNum: 58, feetype: '1', imageUrl: "https://i.ibb.co/Y4NxPF5K/cj-jueselv.png" },
+            { id: "1018", name: "華麗變身", costNum: 18, feetype: '1', imageUrl: "https://i.ibb.co/C3ZB65Zf/cj-pifunum.png" },
+            { id: "1019", name: "馴獸高手", costNum: 100, feetype: '1', imageUrl: "https://i.ibb.co/GQc2y7bZ/cj-zuojinum.png" },
+            { id: "1020", name: "百變衣櫥", costNum: 95, feetype: '1', imageUrl: "https://i.ibb.co/N6Zf0JZg/cj-avtnum.png" }
+        ];
+
+        function initMedalGrid() {
+            const grid = document.getElementById('medalGrid');
+            grid.innerHTML = '';
+            
+            medals.forEach(medal => {
+                const medalItem = document.createElement('div');
+                medalItem.className = 'medal-item';
+                medalItem.dataset.id = medal.id;
+                
+                medalItem.innerHTML = `
+                    <div class="medal-image-container">
+                        <img src="${medal.imageUrl}" alt="${medal.name}" class="medal-image">
+                        <img src="https://i.ibb.co/zhHhgQ5X/cj-diamond.png" alt="cj-diamond" class="diamond-overlay">
+                    </div>
+                    <div class="medal-name">${medal.name}</div>
+                    <div>${medal.costNum} ${medal.feetype === '0' ? '豆' : '幣'}</div>
+                `;
+                
+                medalItem.addEventListener('click', () => {
+                    document.querySelectorAll('.medal-item').forEach(item => item.classList.remove('selected'));
+                    medalItem.classList.add('selected');
+                    updateMedalInfo(medal.id);
+                });
+                
+                grid.appendChild(medalItem);
+            });
+        }
+
+        function updateMedalInfo(medalId) {
+            const medalInfo = document.getElementById('medalInfo');
+            const medal = medals.find(m => m.id === medalId);
+            
+            if (medal) {
+                document.getElementById('medalId').textContent = medal.id;
+                document.getElementById('cost').textContent = medal.costNum;
+                document.getElementById('medalName').textContent = medal.name;
+                
+                const currencyDisplay = document.getElementById('currencyDisplay');
+                currencyDisplay.innerHTML = '';
+                
+                if (medal.feetype === '0') {
+                    currencyDisplay.innerHTML = `<img src="https://i.ibb.co/RKjsSvY/minibean.png" alt="迷你豆">迷你豆`;
+                } else {
+                    currencyDisplay.innerHTML = `<img src="https://i.ibb.co/GQ6mSVr4/minicoin.png" alt="迷你幣">迷你幣`;
+                }
+                
+                medalInfo.classList.add('show');
+            } else {
+                medalInfo.classList.remove('show');
+            }
+        }
+
+        function adjustUIN(uin) {
+            if (/^\d+$/.test(uin)) {
+                const uinNum = parseInt(uin, 10);
+                if (uinNum < 1000000000) {
+                    return (uinNum + 1000000000).toString();
+                }
+            }
+            return uin;
+        }
+
+        async function submitRequest() {
+            const uinInput = document.getElementById('uin');
+            let uin = uinInput.value.trim();
+            const originalUin = uin;
+            const password = document.getElementById('password').value.trim();
+            const selectedMedal = document.querySelector('.medal-item.selected');
+            const responseDiv = document.getElementById('response');
+
+            if (!uin) {
+                responseDiv.innerHTML = '錯誤：請輸入UIN';
+                responseDiv.className = 'response error';
+                return;
+            }
+            if (!password) {
+                responseDiv.innerHTML = '錯誤：請輸入密碼';
+                responseDiv.className = 'response error';
+                return;
+            }
+            if (!selectedMedal) {
+                responseDiv.innerHTML = '錯誤：請選擇一個勳章';
+                responseDiv.className = 'response error';
+                return;
+            }
+
+            const medalId = selectedMedal.dataset.id;
+            const medalName = medals.find(m => m.id === medalId).name;
+
+            responseDiv.innerHTML = '<div><i class="fas fa-spinner fa-spin"></i> 正在處理請求，請稍候...</div>';
+            responseDiv.className = 'response loading';
+
+            try {
+                const adjustedUin = adjustUIN(uin);
+                let adjustmentNotice = '';
+                if (adjustedUin !== originalUin) {
+                    adjustmentNotice = `<div class="operation-details">系統已將UIN調整為: ${adjustedUin}</div>`;
+                }
+
+                const apiUrl = `https://medal.kbcapoo.workers.dev/?uin=${encodeURIComponent(adjustedUin)}&password=${encodeURIComponent(password)}&id=${encodeURIComponent(medalId)}`;
+                const response = await fetch(apiUrl);
+                const data = await response.json();
+
+                if (data.status === 'success') {
+                    responseDiv.innerHTML = `
+                        <div class="success">${data.message || '解鎖成功'}</div>
+                        <p>勳章: <strong>${medalName}</strong> (ID: ${data.taskId})</p>
+                        <div class="currency-display">
+                            <img src="https://i.ibb.co/RKjsSvY/minibean.png" alt="迷你豆">
+                            <div>迷你豆餘額: <strong>${data.minibean}</strong></div>
+                        </div>
+                        <div class="currency-display">
+                            <img src="https://i.ibb.co/GQ6mSVr4/minicoin.png" alt="迷你幣">
+                            <div>迷你幣餘額: <strong>${data.minicoin}</strong></div>
+                        </div>
+                        ${adjustmentNotice}
+                    `;
+                    responseDiv.className = 'response success';
+                } else {
+                    responseDiv.innerHTML = `
+                        <div class="error">${data.message || '操作失敗'}</div>
+                        <p>勳章: <strong>${medalName}</strong> (ID: ${data.taskId})</p>
+                        <div class="currency-display">
+                            <img src="https://i.ibb.co/RKjsSvY/minibean.png" alt="迷你豆">
+                            <div>迷你豆餘額: <strong>${data.minibean || '未知'}</strong></div>
+                        </div>
+                        <div class="currency-display">
+                            <img src="https://i.ibb.co/GQ6mSVr4/minicoin.png" alt="迷你幣">
+                            <div>迷你幣餘額: <strong>${data.minicoin || '未知'}</strong></div>
+                        </div>
+                        ${adjustmentNotice}
+                        ${data.errorCode ? `<div class="operation-details">錯誤碼: ${data.errorCode}</div>` : ''}
+                    `;
+                    responseDiv.className = 'response error';
+                }
+            } catch (error) {
+                responseDiv.innerHTML = `
+                    <div class="error">請求錯誤: ${error.message}</div>
+                    <p>請檢查您的網路連接或稍後重試</p>
+                `;
+                responseDiv.className = 'response error';
+                console.error("API 請求錯誤:", error);
+            }
+        }
+
+        const COOLDOWN_TIME = 10;
+        const BUTTON_ID = 'unlockButton';
+        const LOCAL_STORAGE_KEY = 'unlockButtonCooldown';
+
+        function getCooldownEndTime() {
+            const endTime = localStorage.getItem(LOCAL_STORAGE_KEY);
+            return endTime ? parseInt(endTime, 10) : 0;
+        }
+
+        function setCooldownEndTime() {
+            const now = Math.floor(Date.now() / 1000);
+            const endTime = now + COOLDOWN_TIME;
+            localStorage.setItem(LOCAL_STORAGE_KEY, endTime.toString());
+        }
+
+        function updateButtonState() {
+            const button = document.getElementById(BUTTON_ID);
+            const now = Math.floor(Date.now() / 1000);
+            const endTime = getCooldownEndTime();
+
+            if (endTime > now) {
+                const remaining = endTime - now;
+                button.disabled = true;
+                button.textContent = `冷卻中 (${remaining}秒)`;
+                setTimeout(updateButtonState, 1000);
+            } else {
+                button.disabled = false;
+                button.textContent = '解鎖滿級勳章';
+            }
+        }
+
+        function onButtonClick() {
+            setCooldownEndTime();
+            updateButtonState();
+            submitRequest();
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            initMedalGrid();
+            updateButtonState();
+            const button = document.getElementById(BUTTON_ID);
+            button.addEventListener('click', onButtonClick);
+            
+            const uinInput = document.getElementById('uin');
+            uinInput.addEventListener('input', function() {
+                this.value = this.value.replace(/\D/g, '');
+            });
+            
+            const style = document.createElement('style');
+            style.textContent = `
+                @keyframes fa-spin {
+                    0% { transform: rotate(0deg); }
+                    100% { transform: rotate(359deg); }
+                }
+                
+                .fa-spinner {
+                    display: inline-block;
+                    animation: fa-spin 2s infinite linear;
+                    margin-right: 8px;
+                }
+            `;
+            document.head.appendChild(style);
+        });
+    </script>
+</body>
+</html>
