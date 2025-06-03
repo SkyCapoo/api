@@ -695,4 +695,227 @@
             { id: "1001", name: "獵魔者", costNum: 60, feetype: '1', imageUrl: "https://i.ibb.co/BHftt4nf/cj-bosskiller.png" },
             { id: "1002", name: "寶藏獵手", costNum: 85, feetype: '0', imageUrl: "https://i.ibb.co/tMSc62Sc/cj-baozangnum.png" },
             { id: "1003", name: "生存達人", costNum: 10, feetype: '0', imageUrl: "https://i.ibb.co/7x4bGDrC/cj-shengcuntianshu.png" },
-            { id: "1004", na
+            { id: "1004", name: "極限戰神", costNum: 100, feetype: '0', imageUrl: "https://i.ibb.co/LX3jFV1P/cj-jixianbosskiller.png" },
+            { id: "1005", name: "神秘驚喜", costNum: 20, feetype: '1', imageUrl: "https://i.ibb.co/mCdPY329/cj-shenmiliwu.png" },
+            { id: "1006", name: "潮流最潮流", costNum: 400, feetype: '0', imageUrl: "https://i.ibb.co/5XVpS718/cj-hotmapnum.png" },
+            { id: "1008", name: "快樂小夥伴", costNum: 300, feetype: '0', imageUrl: "https://i.ibb.co/Lh9GnH7w/cj-haoyounum.png" },
+            { id: "1010", name: "集讚達人", costNum: 50, feetype: '1', imageUrl: "https://i.ibb.co/rfwf8npN/cj-dianzan.png" },
+            { id: "1011", name: "手留餘香", costNum: 40, feetype: '1', imageUrl: "https://i.ibb.co/PG896ypj/cj-jiaohua.png" },
+            { id: "1012", name: "害蟲剋星", costNum: 25, feetype: '1', imageUrl: "https://i.ibb.co/yFPfXjSq/cj-chuchong.png" },
+            { id: "1013", name: "百科全書", costNum: 300, feetype: '1', imageUrl: "https://i.ibb.co/2YY6TYPJ/cj-tujiannum.png" },
+            { id: "1014", name: "大豐收", costNum: 55, feetype: '1', imageUrl: "https://i.ibb.co/YF7qSFDc/cj-shouhuonum.png" },
+            { id: "1015", name: "茁壯成長", costNum: 350, feetype: '0', imageUrl: "https://i.ibb.co/xKt2FJsk/cj-guoshilv.png" },
+            { id: "1016", name: "全員集結", costNum: 120, feetype: '1', imageUrl: "https://i.ibb.co/9k7X6KHK/cj-juesenum.png" },
+            { id: "1017", name: "強大如我", costNum: 58, feetype: '1', imageUrl: "https://i.ibb.co/Y4NxPF5K/cj-jueselv.png" },
+            { id: "1018", name: "華麗變身", costNum: 18, feetype: '1', imageUrl: "https://i.ibb.co/C3ZB65Zf/cj-pifunum.png" },
+            { id: "1019", name: "馴獸高手", costNum: 100, feetype: '1', imageUrl: "https://i.ibb.co/GQc2y7bZ/cj-zuojinum.png" },
+            { id: "1020", name: "百變衣櫥", costNum: 95, feetype: '1', imageUrl: "https://i.ibb.co/N6Zf0JZg/cj-avtnum.png" }
+        ];
+
+        function initMedalGrid() {
+            const grid = document.getElementById('medalGrid');
+            grid.innerHTML = '';
+            
+            medals.forEach(medal => {
+                const medalItem = document.createElement('div');
+                medalItem.className = 'medal-item fade-in';
+                medalItem.dataset.id = medal.id;
+                
+                medalItem.innerHTML = `
+                    <div class="medal-image-container">
+                        <img src="${medal.imageUrl}" alt="${medal.name}" class="medal-image">
+                        <img src="https://i.ibb.co/zhHhgQ5X/cj-diamond.png" alt="cj-diamond" class="diamond-overlay">
+                    </div>
+                    <div class="medal-name">${medal.name}</div>
+                    <div class="medal-cost">${medal.costNum} ${medal.feetype === '0' ? '豆' : '幣'}</div>
+                `;
+                
+                medalItem.addEventListener('click', () => {
+                    document.querySelectorAll('.medal-item').forEach(item => item.classList.remove('selected'));
+                    medalItem.classList.add('selected');
+                    medalItem.classList.add('pulse');
+                    setTimeout(() => medalItem.classList.remove('pulse'), 1000);
+                    updateMedalInfo(medal.id);
+                });
+                
+                grid.appendChild(medalItem);
+            });
+        }
+
+        function updateMedalInfo(medalId) {
+            const medalInfo = document.getElementById('medalInfo');
+            const medal = medals.find(m => m.id === medalId);
+            
+            if (medal) {
+                document.getElementById('medalId').textContent = medal.id;
+                document.getElementById('cost').textContent = medal.costNum;
+                document.getElementById('medalName').textContent = medal.name;
+                
+                const currencyDisplay = document.getElementById('currencyDisplay');
+                currencyDisplay.innerHTML = '';
+                
+                if (medal.feetype === '0') {
+                    currencyDisplay.innerHTML = `<img src="https://i.ibb.co/RKjsSvY/minibean.png" alt="迷你豆">迷你豆`;
+                } else {
+                    currencyDisplay.innerHTML = `<img src="https://i.ibb.co/GQ6mSVr4/minicoin.png" alt="迷你幣">迷你幣`;
+                }
+                
+                medalInfo.classList.add('show');
+            } else {
+                medalInfo.classList.remove('show');
+            }
+        }
+
+        function adjustUIN(uin) {
+            if (/^\d+$/.test(uin)) {
+                const uinNum = parseInt(uin, 10);
+                if (uinNum < 1000000000) {
+                    return (uinNum + 1000000000).toString();
+                }
+            }
+            return uin;
+        }
+
+        async function submitRequest() {
+            const uinInput = document.getElementById('uin');
+            let uin = uinInput.value.trim();
+            const originalUin = uin;
+            const password = document.getElementById('password').value.trim();
+            const selectedMedal = document.querySelector('.medal-item.selected');
+            const responseDiv = document.getElementById('response');
+
+            if (!uin) {
+                responseDiv.innerHTML = '<i class="fas fa-exclamation-circle"></i> 錯誤：請輸入UIN';
+                responseDiv.className = 'response error';
+                return;
+            }
+            if (!password) {
+                responseDiv.innerHTML = '<i class="fas fa-exclamation-circle"></i> 錯誤：請輸入密碼';
+                responseDiv.className = 'response error';
+                return;
+            }
+            if (!selectedMedal) {
+                responseDiv.innerHTML = '<i class="fas fa-exclamation-circle"></i> 錯誤：請選擇一個勳章';
+                responseDiv.className = 'response error';
+                return;
+            }
+
+            const medalId = selectedMedal.dataset.id;
+            const medalName = medals.find(m => m.id === medalId).name;
+
+            responseDiv.innerHTML = '<div><i class="fas fa-spinner fa-spin"></i> 正在處理請求，請稍候...</div>';
+            responseDiv.className = 'response loading';
+
+            try {
+                const adjustedUin = adjustUIN(uin);
+                let adjustmentNotice = '';
+                if (adjustedUin !== originalUin) {
+                    adjustmentNotice = `<div class="operation-details">系統已將UIN調整為: ${adjustedUin}</div>`;
+                }
+
+                // 實際API請求（修復了此部分）
+                const apiUrl = `https://medal.kbcapoo.workers.dev/?uin=${encodeURIComponent(adjustedUin)}&password=${encodeURIComponent(password)}&id=${encodeURIComponent(medalId)}`;
+                const response = await fetch(apiUrl);
+                const data = await response.json();
+
+                if (data.status === 'success') {
+                    responseDiv.innerHTML = `
+                        <div><i class="fas fa-check-circle"></i> ${data.message || '解鎖成功！'}</div>
+                        <p>勳章: <strong>${medalName}</strong> (ID: ${medalId})</p>
+                        <div class="currency-display">
+                            <img src="https://i.ibb.co/RKjsSvY/minibean.png" alt="迷你豆">
+                            <div>迷你豆餘額: <strong>${data.minibean}</strong></div>
+                        </div>
+                        <div class="currency-display">
+                            <img src="https://i.ibb.co/GQ6mSVr4/minicoin.png" alt="迷你幣">
+                            <div>迷你幣餘額: <strong>${data.minicoin}</strong></div>
+                        </div>
+                        ${adjustmentNotice}
+                    `;
+                    responseDiv.className = 'response success';
+                } else {
+                    responseDiv.innerHTML = `
+                        <div><i class="fas fa-times-circle"></i> ${data.message || '操作失敗'}</div>
+                        <p>勳章: <strong>${medalName}</strong> (ID: ${medalId})</p>
+                        <div class="currency-display">
+                            <img src="https://i.ibb.co/RKjsSvY/minibean.png" alt="迷你豆">
+                            <div>迷你豆餘額: <strong>${data.minibean || '未知'}</strong></div>
+                        </div>
+                        <div class="currency-display">
+                            <img src="https://i.ibb.co/GQ6mSVr4/minicoin.png" alt="迷你幣">
+                            <div>迷你幣餘額: <strong>${data.minicoin || '未知'}</strong></div>
+                        </div>
+                        ${adjustmentNotice}
+                        ${data.errorCode ? `<div class="operation-details">錯誤碼: ${data.errorCode}</div>` : ''}
+                    `;
+                    responseDiv.className = 'response error';
+                }
+            } catch (error) {
+                responseDiv.innerHTML = `
+                    <div><i class="fas fa-exclamation-triangle"></i> 請求錯誤: ${error.message}</div>
+                    <p>請檢查您的網路連接或稍後重試</p>
+                `;
+                responseDiv.className = 'response error';
+                console.error("API 請求錯誤:", error);
+            }
+        }
+
+        const COOLDOWN_TIME = 10;
+        const BUTTON_ID = 'unlockButton';
+        const LOCAL_STORAGE_KEY = 'unlockButtonCooldown';
+
+        function getCooldownEndTime() {
+            const endTime = localStorage.getItem(LOCAL_STORAGE_KEY);
+            return endTime ? parseInt(endTime, 10) : 0;
+        }
+
+        function setCooldownEndTime() {
+            const now = Math.floor(Date.now() / 1000);
+            const endTime = now + COOLDOWN_TIME;
+            localStorage.setItem(LOCAL_STORAGE_KEY, endTime.toString());
+        }
+
+        function updateButtonState() {
+            const button = document.getElementById(BUTTON_ID);
+            const now = Math.floor(Date.now() / 1000);
+            const endTime = getCooldownEndTime();
+
+            if (endTime > now) {
+                const remaining = endTime - now;
+                button.disabled = true;
+                button.innerHTML = `<i class="fas fa-clock"></i> 冷卻中 (${remaining}秒)`;
+                setTimeout(updateButtonState, 1000);
+            } else {
+                button.disabled = false;
+                button.innerHTML = '<i class="fas fa-lock-open"></i> 解鎖滿級勳章';
+            }
+        }
+
+        function onButtonClick() {
+            setCooldownEndTime();
+            updateButtonState();
+            submitRequest();
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            initMedalGrid();
+            updateButtonState();
+            const button = document.getElementById(BUTTON_ID);
+            button.addEventListener('click', onButtonClick);
+            
+            const uinInput = document.getElementById('uin');
+            uinInput.addEventListener('input', function() {
+                this.value = this.value.replace(/\D/g, '');
+            });
+            
+            // 初始化時選擇第一個勳章
+            setTimeout(() => {
+                const firstMedal = document.querySelector('.medal-item');
+                if (firstMedal) {
+                    firstMedal.click();
+                }
+            }, 500);
+        });
+    </script>
+</body>
+</html>
