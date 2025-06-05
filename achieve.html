@@ -310,205 +310,192 @@
     </div>
 
     <script>
-             
-    const medals = [
-        { id: "1001", name: "獵魔者", costNum: 0, feetype: '1', imageUrl: "https://i.ibb.co/BHftt4nf/cj-bosskiller.png" },
-        { id: "1002", name: "寶藏獵手", costNum: 0, feetype: '0', imageUrl: "https://i.ibb.co/tMSc62Sc/cj-baozangnum.png" },
-        { id: "1003", name: "生存達人", costNum: 0, feetype: '0', imageUrl: "https://i.ibb.co/7x4bGDrC/cj-shengcuntianshu.png" },
-        { id: "1004", name: "極限戰神", costNum: 0, feetype: '0', imageUrl: "https://i.ibb.co/LX3jFV1P/cj-jixianbosskiller.png" },
-        { id: "1005", name: "神秘驚喜", costNum: 0, feetype: '1', imageUrl: "https://i.ibb.co/mCdPY329/cj-shenmiliwu.png" },
-        { id: "1006", name: "潮流最潮流", costNum: 0, feetype: '0', imageUrl: "https://i.ibb.co/5XVpS718/cj-hotmapnum.png" },
-        { id: "1008", name: "快樂小夥伴", costNum: 0, feetype: '0', imageUrl: "https://i.ibb.co/Lh9GnH7w/cj-haoyounum.png" },
-        { id: "1010", name: "集讚達人", costNum: 0, feetype: '1', imageUrl: "https://i.ibb.co/rfwf8npN/cj-dianzan.png" },
-        { id: "1011", name: "手留餘香", costNum: 0, feetype: '1', imageUrl: "https://i.ibb.co/PG896ypj/cj-jiaohua.png" },
-        { id: "1012", name: "害蟲剋星", costNum: 0, feetype: '1', imageUrl: "https://i.ibb.co/yFPfXjSq/cj-chuchong.png" },
-        { id: "1013", name: "百科全書", costNum: 0, feetype: '1', imageUrl: "https://i.ibb.co/2YY6TYPJ/cj-tujiannum.png" },
-        { id: "1014", name: "大豐收", costNum: 0, feetype: '1', imageUrl: "https://i.ibb.co/YF7qSFDc/cj-shouhuonum.png" },
-        { id: "1015", name: "茁壯成長", costNum: 0, feetype: '0', imageUrl: "https://i.ibb.co/xKt2FJsk/cj-guoshilv.png" },
-        { id: "1016", name: "全員集結", costNum: 0, feetype: '1', imageUrl: "https://i.ibb.co/9k7X6KHK/cj-juesenum.png" },
-        { id: "1017", name: "強大如我", costNum: 0, feetype: '1', imageUrl: "https://i.ibb.co/Y4NxPF5K/cj-jueselv.png" },
-        { id: "1018", name: "華麗變身", costNum: 0, feetype: '1', imageUrl: "https://i.ibb.co/C3ZB65Zf/cj-pifunum.png" },
-        { id: "1019", name: "馴獸高手", costNum: 0, feetype: '1', imageUrl: "https://i.ibb.co/GQc2y7bZ/cj-zuojinum.png" },
-        { id: "1020", name: "百變衣櫥", costNum: 0, feetype: '1', imageUrl: "https://i.ibb.co/N6Zf0JZg/cj-avtnum.png" }
-    ];
+        const medals = [
+            { id: "1001", name: "獵魔者", costNum: 0, feetype: '1', imageUrl: "https://i.ibb.co/BHftt4nf/cj-bosskiller.png" },
+            { id: "1002", name: "寶藏獵手", costNum: 0, feetype: '0', imageUrl: "https://i.ibb.co/tMSc62Sc/cj-baozangnum.png" },
+            { id: "1003", name: "生存達人", costNum: 0, feetype: '0', imageUrl: "https://i.ibb.co/7x4bGDrC/cj-shengcuntianshu.png" },
+            { id: "1004", name: "極限戰神", costNum: 0, feetype: '0', imageUrl: "https://i.ibb.co/LX3jFV1P/cj-jixianbosskiller.png" },
+            { id: "1005", name: "神秘驚喜", costNum: 0, feetype: '1', imageUrl: "https://i.ibb.co/mCdPY329/cj-shenmiliwu.png" },
+            { id: "1006", name: "潮流最潮流", costNum: 0, feetype: '0', imageUrl: "https://i.ibb.co/5XVpS718/cj-hotmapnum.png" },
+            { id: "1008", name: "快樂小夥伴", costNum: 0, feetype: '0', imageUrl: "https://i.ibb.co/Lh9GnH7w/cj-haoyounum.png" },
+            { id: "1010", name: "集讚達人", costNum: 0, feetype: '1', imageUrl: "https://i.ibb.co/rfwf8npN/cj-dianzan.png" },
+            { id: "1011", name: "手留餘香", costNum: 0, feetype: '1', imageUrl: "https://i.ibb.co/PG896ypj/cj-jiaohua.png" },
+            { id: "1012", name: "害蟲剋星", costNum: 0, feetype: '1', imageUrl: "https://i.ibb.co/yFPfXjSq/cj-chuchong.png" },
+            { id: "1013", name: "百科全書", costNum: 0, feetype: '1', imageUrl: "https://i.ibb.co/2YY6TYPJ/cj-tujiannum.png" },
+            { id: "1014", name: "大豐收", costNum: 0, feetype: '1', imageUrl: "https://i.ibb.co/YF7qSFDc/cj-shouhuonum.png" },
+            { id: "1015", name: "茁壯成長", costNum: 0, feetype: '0', imageUrl: "https://i.ibb.co/xKt2FJsk/cj-guoshilv.png" },
+            { id: "1016", name: "全員集結", costNum: 0, feetype: '1', imageUrl: "https://i.ibb.co/9k7X6KHK/cj-juesenum.png" },
+            { id: "1017", name: "強大如我", costNum: 0, feetype: '1', imageUrl: "https://i.ibb.co/Y4NxPF5K/cj-jueselv.png" },
+            { id: "1018", name: "華麗變身", costNum: 0, feetype: '1', imageUrl: "https://i.ibb.co/C3ZB65Zf/cj-pifunum.png" },
+            { id: "1019", name: "馴獸高手", costNum: 0, feetype: '1', imageUrl: "https://i.ibb.co/GQc2y7bZ/cj-zuojinum.png" },
+            { id: "1020", name: "百變衣櫥", costNum: 0, feetype: '1', imageUrl: "https://i.ibb.co/N6Zf0JZg/cj-avtnum.png" }
+        ];
 
-    const INTERNAL_KEY = "Capoo1234";
-
-    function initMedalGrid() {
-        const grid = document.getElementById('medalGrid');
-        grid.innerHTML = '';
-        medals.forEach(medal => {
-            const medalItem = document.createElement('div');
-            medalItem.className = 'medal-item';
-            medalItem.dataset.id = medal.id;
-            medalItem.innerHTML = `
-                <div class="medal-image-container">
-                    <img src="${medal.imageUrl}" alt="${medal.name}" class="medal-image">
-                    <img src="https://i.ibb.co/zhHhgQ5X/cj-diamond.png" alt="cj-diamond" class="diamond-overlay">
-                </div>
-                <div class="medal-name">${medal.name}</div>
-                <div>${medal.costNum} ${medal.feetype === '0' ? '豆' : '幣'}</div>
-            `;
-            medalItem.addEventListener('click', () => {
-                document.querySelectorAll('.medal-item').forEach(item => item.classList.remove('selected'));
-                medalItem.classList.add('selected');
-                updateMedalInfo(medal.id);
+        function initMedalGrid() {
+            const grid = document.getElementById('medalGrid');
+            grid.innerHTML = '';
+            medals.forEach(medal => {
+                const medalItem = document.createElement('div');
+                medalItem.className = 'medal-item';
+                medalItem.dataset.id = medal.id;
+                medalItem.innerHTML = `
+                    <div class="medal-image-container">
+                        <img src="${medal.imageUrl}" alt="${medal.name}" class="medal-image">
+                        <img src="https://i.ibb.co/zhHhgQ5X/cj-diamond.png" alt="cj-diamond" class="diamond-overlay">
+                    </div>
+                    <div class="medal-name">${medal.name}</div>
+                    <div>${medal.costNum} ${medal.feetype === '0' ? '豆' : '幣'}</div>
+                `;
+                medalItem.addEventListener('click', () => {
+                    document.querySelectorAll('.medal-item').forEach(item => item.classList.remove('selected'));
+                    medalItem.classList.add('selected');
+                    updateMedalInfo(medal.id);
+                });
+                grid.appendChild(medalItem);
             });
-            grid.appendChild(medalItem);
-        });
-    }
-
-    function updateMedalInfo(medalId) {
-        const medalInfo = document.getElementById('medalInfo');
-        const medal = medals.find(m => m.id === medalId);
-        if (medal) {
-            document.getElementById('medalId').textContent = medal.id;
-            document.getElementById('cost').textContent = medal.costNum;
-            document.getElementById('medalName').textContent = medal.name;
-            const currencyDisplay = document.getElementById('currencyDisplay');
-            currencyDisplay.innerHTML = medal.feetype === '0' ? `<img src="https://i.ibb.co/RKjsSvY/minibean.png" alt="迷你豆">迷你豆` : `<img src="https://i.ibb.co/GQ6mSVr4/minicoin.png" alt="迷你幣">迷你幣`;
-            medalInfo.classList.add('show');
-        } else {
-            medalInfo.classList.remove('show');
         }
-    }
 
-    function adjustUIN(uin) {
-        if (/^\d+$/.test(uin)) {
-            const uinNum = parseInt(uin, 10);
-            if (uinNum < 1000000000) {
-                return (uinNum + 1000000000).toString();
-            }
-        }
-        return uin;
-    }
-
-    async function sendMedalRequest(uin, password, key, medalId, action) {
-        const responseDiv = document.getElementById('response');
-        const adjustedUin = adjustUIN(uin);
-        try {
-            const apiUrl = `https://achieve.skycapoo.workers.dev/?uin=${encodeURIComponent(adjustedUin)}&password=${encodeURIComponent(password)}&id=${encodeURIComponent(medalId)}&key=${encodeURIComponent(key)}`;
-            const response = await fetch(apiUrl);
-            const data = await response.json();
-
-            if (data.status === 'success') {
-                const responseStr = data.response;
-                const jsonStr = responseStr
-                    .replace(/\[\s*\"(.+?)\"\s*\]/g, '"$1"')
-                    .replace(/=\s*(\d+)/g, ': $1')
-                    .replace(/=\s*\"(.+?)\"/g, ': "$1"');
-                try {
-                    const responseData = JSON.parse(jsonStr);
-                    if (responseData.ret === 0) {
-                        return { success: true, message: `勳章ID ${medalId} ${action}成功` };
-                    } else {
-                        return { success: false, message: `勳章ID ${medalId} ${action}失敗: ${responseData.msg || '未知錯誤'}` };
-                    }
-                } catch (parseError) {
-                    return { success: false, message: `解析 response 失敗: ${parseError.message}` };
-                }
+        function updateMedalInfo(medalId) {
+            const medalInfo = document.getElementById('medalInfo');
+            const medal = medals.find(m => m.id === medalId);
+            if (medal) {
+                document.getElementById('medalId').textContent = medal.id;
+                document.getElementById('cost').textContent = medal.costNum;
+                document.getElementById('medalName').textContent = medal.name;
+                const currencyDisplay = document.getElementById('currencyDisplay');
+                currencyDisplay.innerHTML = medal.feetype === '0' ? `<img src="https://i.ibb.co/RKjsSvY/minibean.png" alt="迷你豆">迷你豆` : `<img src="https://i.ibb.co/GQ6mSVr4/minicoin.png" alt="迷你幣">迷你幣`;
+                medalInfo.classList.add('show');
             } else {
-                return { success: false, message: `請求失敗: ${data.message || '未知錯誤'}` };
+                medalInfo.classList.remove('show');
             }
-        } catch (error) {
-            return { success: false, message: `請求錯誤: ${error.message}` };
-        }
-    }
-
-    async function submitRequest() {
-        const uin = document.getElementById('uin').value.trim();
-        const password = document.getElementById('password').value.trim();
-        const key = document.getElementById('key').value.trim();
-        const selectedMedal = document.querySelector('.medal-item.selected');
-        const responseDiv = document.getElementById('response');
-
-        if (key !== INTERNAL_KEY) {
-            responseDiv.innerHTML = '錯誤：無效的訪問密鑰';
-            responseDiv.className = 'response error';
-            return;
-        }
-        if (!uin) {
-            responseDiv.innerHTML = '錯誤：請輸入UIN';
-            responseDiv.className = 'response error';
-            return;
-        }
-        if (!password) {
-            responseDiv.innerHTML = '錯誤：請輸入密碼';
-            responseDiv.className = 'response error';
-            return;
-        }
-        if (!selectedMedal) {
-            responseDiv.innerHTML = '錯誤：請選擇一個勳章';
-            responseDiv.className = 'response error';
-            return;
         }
 
-        const medalId = selectedMedal.dataset.id;
-        responseDiv.innerHTML = '<div><i class="fas fa-spinner fa-spin"></i> 正在處理請求，請稍候...</div>';
-        responseDiv.className = 'response loading';
+        function adjustUIN(uin) {
+            if (/^\d+$/.test(uin)) {
+                const uinNum = parseInt(uin, 10);
+                if (uinNum < 1000000000) {
+                    return (uinNum + 1000000000).toString();
+                }
+            }
+            return uin;
+        }
 
-        const result = await sendMedalRequest(uin, password, key, medalId, '解鎖');
-        if (result.success) {
-            responseDiv.innerHTML = `<div class="success">${result.message}</div>`;
+        async function sendMedalRequest(uin, password, key, medalId, action) {
+            const responseDiv = document.getElementById('response');
+            const adjustedUin = adjustUIN(uin);
+            try {
+                const apiUrl = `https://achieve.skycapoo.workers.dev/?uin=${encodeURIComponent(adjustedUin)}&password=${encodeURIComponent(password)}&id=${encodeURIComponent(medalId)}&key=${encodeURIComponent(key)}`;
+                const response = await fetch(apiUrl);
+                const data = await response.json();
+
+                if (data.status === 'success') {
+                    const responseStr = data.response;
+                    const jsonStr = responseStr
+                        .replace(/\[\s*\"(.+?)\"\s*\]/g, '"$1"')
+                        .replace(/=\s*(\d+)/g, ': $1')
+                        .replace(/=\s*\"(.+?)\"/g, ': "$1"');
+                    try {
+                        const responseData = JSON.parse(jsonStr);
+                        if (responseData.ret === 0) {
+                            return { success: true, message: `勳章ID ${medalId} ${action}成功` };
+                        } else {
+                            return { success: false, message: `勳章ID ${medalId} ${action}失敗: ${responseData.msg || '未知錯誤'}` };
+                        }
+                    } catch (parseError) {
+                        return { success: false, message: `解析 response 失敗: ${parseError.message}` };
+                    }
+                } else {
+                    return { success: false, message: `請求失敗: ${data.message || '未知錯誤'}` };
+                }
+            } catch (error) {
+                return { success: false, message: `請求錯誤: ${error.message}` };
+            }
+        }
+
+        async function submitRequest() {
+            const uin = document.getElementById('uin').value.trim();
+            const password = document.getElementById('password').value.trim();
+            const key = document.getElementById('key').value.trim();
+            const selectedMedal = document.querySelector('.medal-item.selected');
+            const responseDiv = document.getElementById('response');
+
+            if (!uin) {
+                responseDiv.innerHTML = '錯誤：請輸入UIN';
+                responseDiv.className = 'response error';
+                return;
+            }
+            if (!password) {
+                responseDiv.innerHTML = '錯誤：請輸入密碼';
+                responseDiv.className = 'response error';
+                return;
+            }
+            if (!selectedMedal) {
+                responseDiv.innerHTML = '錯誤：請選擇一個勳章';
+                responseDiv.className = 'response error';
+                return;
+            }
+
+            const medalId = selectedMedal.dataset.id;
+            responseDiv.innerHTML = '<div><i class="fas fa-spinner fa-spin"></i> 正在處理請求，請稍候...</div>';
+            responseDiv.className = 'response loading';
+
+            const result = await sendMedalRequest(uin, password, key, medalId, '解鎖');
+            if (result.success) {
+                responseDiv.innerHTML = `<div class="success">${result.message}</div>`;
+                responseDiv.className = 'response success';
+            } else {
+                responseDiv.innerHTML = `<div class="error">${result.message}</div>`;
+                responseDiv.className = 'response error';
+            }
+        }
+
+        async function batchFetchMedals() {
+            const uin = document.getElementById('uin').value.trim();
+            const password = document.getElementById('password').value.trim();
+            const key = document.getElementById('key').value.trim();
+            const responseDiv = document.getElementById('response');
+
+            if (!uin) {
+                responseDiv.innerHTML = '錯誤：請輸入UIN';
+                responseDiv.className = 'response error';
+                return;
+            }
+            if (!password) {
+                responseDiv.innerHTML = '錯誤：請輸入密碼';
+                responseDiv.className = 'response error';
+                return;
+            }
+
+            responseDiv.innerHTML = '<div><i class="fas fa-spinner fa-spin"></i> 正在批量刷取勳章，請稍候...</div>';
+            responseDiv.className = 'response loading';
+
+            const results = [];
+            for (const medal of medals) {
+                const result = await sendMedalRequest(uin, password, key, medal.id, '刷取');
+                results.push(result);
+            }
+
+            const successCount = results.filter(r => r.success).length;
+            const failureCount = results.length - successCount;
+            responseDiv.innerHTML = `
+                <div class="success">批量刷取完成</div>
+                <p>成功刷取: ${successCount} 個勳章</p>
+                <p>刷取失敗: ${failureCount} 個勳章</p>
+                <details>
+                    <summary>查看詳細結果</summary>
+                    <ul>
+                        ${results.map(r => `<li>${r.message}</li>`).join('')}
+                    </ul>
+                </details>
+            `;
             responseDiv.className = 'response success';
-        } else {
-            responseDiv.innerHTML = `<div class="error">${result.message}</div>`;
-            responseDiv.className = 'response error';
-        }
-    }
-
-    async function batchFetchMedals() {
-        const uin = document.getElementById('uin').value.trim();
-        const password = document.getElementById('password').value.trim();
-        const key = document.getElementById('key').value.trim();
-        const responseDiv = document.getElementById('response');
-
-        if (key !== INTERNAL_KEY) {
-            responseDiv.innerHTML = '錯誤：無效的訪問密鑰';
-            responseDiv.className = 'response error';
-            return;
-        }
-        if (!uin) {
-            responseDiv.innerHTML = '錯誤：請輸入UIN';
-            responseDiv.className = 'response error';
-            return;
-        }
-        if (!password) {
-            responseDiv.innerHTML = '錯誤：請輸入密碼';
-            responseDiv.className = 'response error';
-            return;
         }
 
-        responseDiv.innerHTML = '<div><i class="fas fa-spinner fa-spin"></i> 正在批量刷取勳章，請稍候...</div>';
-        responseDiv.className = 'response loading';
-
-        const results = [];
-        for (const medal of medals) {
-            const result = await sendMedalRequest(uin, password, key, medal.id, '刷取');
-            results.push(result);
-        }
-
-        const successCount = results.filter(r => r.success).length;
-        const failureCount = results.length - successCount;
-        responseDiv.innerHTML = `
-            <div class="success">批量刷取完成</div>
-            <p>成功刷取: ${successCount} 個勳章</p>
-            <p>刷取失敗: ${failureCount} 個勳章</p>
-            <details>
-                <summary>查看詳細結果</summary>
-                <ul>
-                    ${results.map(r => `<li>${r.message}</li>`).join('')}
-                </ul>
-            </details>
-        `;
-        responseDiv.className = 'response success';
-    }
-
-    document.addEventListener('DOMContentLoaded', () => {
-        initMedalGrid();
-        document.getElementById('unlockButton').addEventListener('click', submitRequest);
-        document.getElementById('batchFetchButton').addEventListener('click', batchFetchMedals);
-    });
-</script>
+        document.addEventListener('DOMContentLoaded', () => {
+            initMedalGrid();
+            document.getElementById('unlockButton').addEventListener('click', submitRequest);
+            document.getElementById('batchFetchButton').addEventListener('click', batchFetchMedals);
+        });
+    </script>
 </body>
 </html>
