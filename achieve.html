@@ -379,38 +379,39 @@
             }
             return uin;
         }
+async function sendMedalRequest(uin, password, key, medalId, action) {
+    const responseDiv = document.getElementById('response');
+    const adjustedUin = adjustUIN(uin);
+    try {
+        const apiUrl = `https://achieve.skycapoo.workers.dev/?uin=${encodeURIComponent(adjustedUin)}&password=${encodeURIComponent(password)}&id=${encodeURIComponent(medalId)}&key=${encodeURIComponent(key)}`;
+        const response = await fetch(apiUrl);
+        const data = await response.json();
 
-        async function sendMedalRequest(uin, password, key, medalId, action) {
-            const responseDiv = document.getElementById('response');
-            const adjustedUin = adjustUIN(uin);
+        // 修改條件，接受 "success" 或 "partial_success"
+        if (['success', 'partial_success'].includes(data.status)) {
+            const responseStr = data.response;
+            // 將後端的非標準 JSON 轉換為標準格式
+            const jsonStr = responseStr
+                .replace(/\[\s*\"(.+?)\"\s*\]/g, '"$1"')
+                .replace(/=\s*(\d+)/g, ': $1')
+                .replace(/=\s*\"(.+?)\"/g, ': "$1"');
             try {
-                const apiUrl = `https://achieve.skycapoo.workers.dev/?uin=${encodeURIComponent(adjustedUin)}&password=${encodeURIComponent(password)}&id=${encodeURIComponent(medalId)}&key=${encodeURIComponent(key)}`;
-                const response = await fetch(apiUrl);
-                const data = await response.json();
-
-                if (data.status === 'success') {
-                    const responseStr = data.response;
-                    const jsonStr = responseStr
-                        .replace(/\[\s*\"(.+?)\"\s*\]/g, '"$1"')
-                        .replace(/=\s*(\d+)/g, ': $1')
-                        .replace(/=\s*\"(.+?)\"/g, ': "$1"');
-                    try {
-                        const responseData = JSON.parse(jsonStr);
-                        if (responseData.ret === 0) {
-                            return { success: true, message: `勳章ID ${medalId} ${action}成功` };
-                        } else {
-                            return { success: false, message: `勳章ID ${medalId} ${action}失敗: ${responseData.msg || '未知錯誤'}` };
-                        }
-                    } catch (parseError) {
-                        return { success: false, message: `解析 response 失敗: ${parseError.message}` };
-                    }
+                const responseData = JSON.parse(jsonStr);
+                if (responseData.ret === 0) {
+                    return { success: true, message: `勳章ID ${medalId} ${action}成功` };
                 } else {
-                    return { success: false, message: `請求失敗: ${data.message || '未知錯誤'}` };
+                    return { success: false, message: `勳章ID ${medalId} ${action}失敗: ${responseData.msg || '未知錯誤'}` };
                 }
-            } catch (error) {
-                return { success: false, message: `請求錯誤: ${error.message}` };
+            } catch (parseError) {
+                return { success: false, message: `解析 response 失敗: ${parseError.message}` };
             }
+        } else {
+            return { success: false, message: `請求失敗: ${data.message || '未知錯誤'}` };
         }
+    } catch (error) {
+        return { success: false, message: `請求錯誤: ${error.message}` };
+    }
+}
 
         async function submitRequest() {
             const uin = document.getElementById('uin').value.trim();
